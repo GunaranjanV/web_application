@@ -11,10 +11,14 @@ pipeline {
                 git branch: 'dev', url: 'https://github.com/GunaranjanV/web_application.git'
             }
         }
+        stage('Maven compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'cd $WORKSPACE && mvn clean package -DskipTests'
-
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Docker Image') {
@@ -31,8 +35,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(
                                  credentialsId: 'dockerhub-credentials', 
-                                 usernameVariable: 'DOCKERHUB_USERNAME', 
-                                 passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                                                  usernameVariable: 'DOCKERHUB_USERNAME', 
+                                                  passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                     sh 'echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin'
                     sh 'docker tag webapp:latest $DOCKERHUB_USERNAME/webapp:latest'
                     sh 'docker push $DOCKERHUB_USERNAME/webapp:latest'
