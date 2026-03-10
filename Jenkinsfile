@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'mvn -pl webapp clean package -DskipTests'
             }
         }
         stage('Docker Image') {
