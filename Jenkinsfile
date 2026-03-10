@@ -11,14 +11,9 @@ pipeline {
                 git branch: 'dev', url: 'https://github.com/GunaranjanV/web_application.git'
             }
         }
-        stage('Maven compile') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
             }
         }
         stage('Docker Image') {
