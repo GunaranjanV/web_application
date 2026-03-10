@@ -13,7 +13,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                sh 'cd $WORKSPACE && mvn clean package -DskipTests'
+
             }
         }
         stage('Docker Image') {
